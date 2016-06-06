@@ -1,6 +1,9 @@
 package wallettemplate.utils;
 
 import org.bitcoinj.core.*;
+import org.bitcoinj.wallet.*;
+import org.bitcoinj.wallet.listeners.*;
+import org.bitcoinj.core.listeners.*;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -26,13 +29,7 @@ public class BitcoinUIModel {
     }
 
     public void setWallet(Wallet wallet) {
-        wallet.addEventListener(new AbstractWalletEventListener() {
-            @Override
-            public void onWalletChanged(Wallet wallet) {
-                super.onWalletChanged(wallet);
-                update(wallet);
-            }
-        }, Platform::runLater);
+        wallet.addChangeEventListener(Platform::runLater, wallet1 -> update(wallet1));
         update(wallet);
     }
 
